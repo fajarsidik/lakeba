@@ -1,55 +1,26 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { TodoListType } from "../types/todo-list";
+import TodoItem from "../components/todo-item";
 
-const dataTodoList = [
-  {
-    id: 1,
-    description: "Create new project",
-    isDone: false,
-  },
-  {
-    id: 2,
-    description: "Working call",
-    isDone: false,
-  },
-  {
-    id: 3,
-    description: "Meet with doctor",
-    isDone: false,
-  },
-  {
-    id: 4,
-    description: "Go to sleep",
-    isDone: false,
-  },
-  {
-    id: 5,
-    description: "Eat the cake",
-    isDone: true,
-  },
-  {
-    id: 6,
-    description: "Walk with dog",
-    isDone: true,
-  },
-  {
-    id: 7,
-    description: "Walk with Cat",
-    isDone: true,
-  },
-  {
-    id: 8,
-    description: "Eat the fruit",
-    isDone: false,
-  },
-  {
-    id: 9,
-    description: "Buy a shoes",
-    isDone: true,
-  },
-];
 const TodoList = () => {
-  const [todoData, setTodoData] = useState<TodoListType[]>(dataTodoList);
+  const [todoData, setTodoData] = useState<TodoListType[]>([]);
+  const [isAddNew, setAddNew] = useState<boolean>(false);
+  const [todoDescription, setTodoDescription] = useState<string>("");
+
+  const handleChangeDescription = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setTodoDescription(value);
+  };
+  const handleAddTodoList = () => {
+    let addTodo = [...todoData];
+    let newTodo = {
+      description: todoDescription,
+      isDone: false,
+    };
+    addTodo.push(newTodo);
+    setTodoData(addTodo);
+    handleAddNew();
+  };
 
   const handleUpdateTodoList = (id: number) => {
     let updateTodo = [...todoData];
@@ -59,9 +30,12 @@ const TodoList = () => {
 
   const handleDeleteTodoList = (id: number) => {
     let removeTodo = [...todoData];
-    removeTodo.splice(id, 0);
-    console.log(removeTodo);
+    removeTodo.splice(id, 1);
     setTodoData(removeTodo);
+  };
+
+  const handleAddNew = () => {
+    setAddNew(!isAddNew);
   };
 
   return (
@@ -70,53 +44,30 @@ const TodoList = () => {
         <div className={"header"}>
           <h4>Todo List</h4>
         </div>
+        
+        <TodoItem data={todoData} handleUpdateTodoList={handleUpdateTodoList} handleDeleteTodoList={handleDeleteTodoList} />        
 
-        <div className={"todo-list-items"}>
-          {todoData &&
-            todoData.map((item, index) => (
-              <div
-                className={
-                  "item d-flex align-items-center justify-content-between"
-                }
-                key={index}
-                role={"button"}
-              >
-                <label
-                  role={"button"}
-                  className={`d-flex align-items-center ${
-                    item.isDone && "done"
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    name="checkbox"
-                    checked={item.isDone}
-                    onClick={() => {
-                      handleUpdateTodoList(index);
-                    }}
-                  />
-                  {item.description}
-                </label>
-                <a
-                  title={`Delete : ${item.description}`}
-                  onClick={() => handleDeleteTodoList(index)}
-                >
-                  <span
-                    className={"material-symbols-outlined delete-todo-list"}
-                  >
-                    delete
-                  </span>
-                </a>
-              </div>
-            ))}
-        </div>
+        {isAddNew && (
+          <div className={"input-todo-list"}>
+            <input
+              type={"text"}
+              name={"add-new-todolist"}
+              placeholder="Add your todo list here"
+              onChange={handleChangeDescription}
+            />
+          </div>
+        )}
+
         <div
           className={
             "add-todo-list d-flex align-items-center justify-content-center"
           }
+          role={"button"}
+          onClick={isAddNew ? handleAddTodoList : handleAddNew}
         >
           <span className={"material-symbols-outlined"}>add</span>
-          <p>Add Task</p>
+
+          {isAddNew && <p>Add Task</p>}
         </div>
       </div>
     </div>

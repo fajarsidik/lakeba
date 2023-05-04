@@ -104,6 +104,36 @@ body{
     }
 }
 
+.input-todo-list{
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    box-shadow: -1px -5px 8px 0px rgb(231 231 231);
+    input[type="text"]{
+        padding: 10px 15px;
+        height: 55px;
+        width: 100%;
+        border: 1px solid #e7e7e7;
+        outline: none;
+        &::placeholder {
+            color: #d4d4d4;
+            font-weight: normal;
+            font-size: 14px;
+        }
+    }
+}
+.empty-task{
+    color: #c0c0c0;
+    height: 30vh;
+    span{
+        font-size: 60px;
+        color: #dcdcdc
+    }
+    p{
+        margin-top: 10px;
+        text-align: center;
+    }
+}
 .delete-todo-list{
     color: rgb(255, 124, 124);
     text-shadow: 1px 1px 1px #ffffff;
