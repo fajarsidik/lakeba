@@ -42,7 +42,7 @@ export default function TodoItem({
               <a
                 title={`Delete : ${item.description}`}
                 onClick={() => {
-                  handleUpdateTodoList(index!);
+                    handleDeleteTodoList(index!);
                 }}
               >
                 <span className={"material-symbols-outlined delete-todo-list"}>
